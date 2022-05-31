@@ -1,11 +1,10 @@
-const User = require("../models/User");
+const { User} = require("../models/User");
 const bcrypt = require("bcryptjs");
 const transporter = require("../config/nodemailer");
 const jwt = require('jsonwebtoken');
 const { jwt_secret } = require('../config/keys');
 
-const UserController ={
-    
+const UserController ={    
     async create(req,res){
         try {
             req.body.confirmed = false;
@@ -30,11 +29,8 @@ const UserController ={
         }
     },
     login(req, res){
-        User.findOne({
-            where: {
-                mail: req.body.mail
-            }
-        }).then(user => {
+        User.findOne({mail: req.body.mail})
+        .then(user => {
             if(!user){
                 return res.status(400).send({message: "Usuario o contraseña incorrecta."})
             }
@@ -45,8 +41,8 @@ const UserController ={
             if(!user.confirmed){
                 return res.status(400).send({message:"Debes confirmar tu correo"})
             }
-            token = jwt.sign({ id: user.id }, jwt_secret);
-            Token.create({ token, UserId: user.id });
+            token = jwt.sign({ id: user._id }, jwt_secret);
+            Token.create({ token, UserId: user._id });
             res.send({ message: 'Bienvenid@' + user.name, user, token });
         })
     },
