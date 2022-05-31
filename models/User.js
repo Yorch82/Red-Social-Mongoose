@@ -6,7 +6,7 @@ const UserSchema = new mongoose.Schema({
     avatar: String,
     password: String,
     // token: [],
-    is_active: Boolean,
+    confirmed: Boolean,
     is_admin: Boolean,
 }, { timestamps: true });
 
