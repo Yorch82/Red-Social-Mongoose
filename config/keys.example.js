@@ -1,1 +1,1 @@
-module.exports = {MONGO_URI:'', jwt_secret:''};
+module.exports = {MONGO_URI:'', jwt_secret:'', auth:{user: '', pass: ''}};

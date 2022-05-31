@@ -4,7 +4,6 @@ const transporter = require("../config/nodemailer");
 const jwt = require('jsonwebtoken');
 const { jwt_secret } = require('../config/keys');
 
-
 const UserController ={
     
     async create(req,res){
@@ -54,14 +53,13 @@ const UserController ={
     async confirm(req,res){
         try {
             const token = req.params.emailToken;
-            const payload = jwt.verify(token,jwt_secret); 
+            const payload = jwt.verify(token,jwt_secret);  
             await User.updateOne({mail: payload.mail}, {$set :{confirmed:true}});     
             res.status(201).send( "Usuario confirmado con exito" );        
         } catch (error) {        
             console.error(error)        
-        }
-        
-        },    
+        }        
+    },    
 }
 
 module.exports = UserController;
