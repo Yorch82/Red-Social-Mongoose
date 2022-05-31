@@ -5,6 +5,7 @@ const UserSchema = new mongoose.Schema({
     mail:{ type: String, unique: true },
     avatar: String,
     password: String,
+    // token: [],
     is_active: Boolean,
     is_admin: Boolean,
 }, { timestamps: true });
