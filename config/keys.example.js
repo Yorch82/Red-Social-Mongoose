@@ -1,1 +1,1 @@
-module.exports = {MONGO_URI:''}
+module.exports = {MONGO_URI:''},{jwt_secret:''}
