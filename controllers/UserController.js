@@ -5,10 +5,11 @@ const jwt = require('jsonwebtoken');
 const { jwt_secret } = require('../config/keys');
 
 const UserController ={    
-    async create(req,res){
+    async create(req,res,next){
         try {
             req.body.confirmed = false;
-            req.body.role = "user";        
+            req.body.role = "user";
+            req.body.avatar = "../assets/defaultavatar.jpg"        
             const password = bcrypt.hashSync(req.body.password,10);      
             const user = await User.create({...req.body,confirmed: req.body.confirmed, password:password});
             const emailToken = jwt.sign({mail:req.body.mail},jwt_secret,{expiresIn:'48h'});
@@ -23,9 +24,9 @@ const UserController ={
                 message: "Te hemos enviado un correo para confirmar el registro",
                 user,
             })            
-        } catch (error) {       
-            console.error(error)     
-            res.status(500).send({ message: 'Ha habido un problema al crear el usuario' })
+        } catch (err) {
+            err.origin = 'User';
+            next(err);            
         }
     },  
     async login(req, res) {
@@ -50,7 +51,21 @@ const UserController ={
         } catch (error) {        
             console.error(error)        
         }        
-    },    
+    },
+    async logout(req, res) {
+        try {
+          await User.findByIdAndUpdate(req.user._id, {
+            $pull: { tokens: req.headers.authorization },
+          });
+          res.send({ message: "Desconectado con éxito" });
+        } catch (error) {
+          console.error(error);
+          res.status(500).send({
+            message: "Hubo un problema al intentar desconectar al usuario",
+          });
+        }
+      },
+        
 }
 
 module.exports = UserController;

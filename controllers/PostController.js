@@ -8,7 +8,8 @@ const PostController ={
                 userId: req.user._id,
             });                    
             res.status(201).send({ message: 'Post creado con éxito', post});        
-        } catch (error) {       
+        } catch (error) {
+            console.log(error)       
             res.status(500).send({ message: 'Ha habido un problema al crear el post' })
         }
     },
@@ -18,6 +19,21 @@ const PostController ={
             res.status(201).send({ message: 'Post borrado con éxito', post});        
         } catch (error) {                   
             res.status(500).send({ message: 'Ha habido un problema al borrar el post' })
+        }
+    },
+    async update(req,res){
+        try {        
+            const post = await Post.findByIdAndUpdate(
+                req.params._id,
+                {...req.body, userId: req.user._id},                
+                { 
+                    new: true,                
+                }             
+            );        
+            res.status(201).send({ message: 'Post actualizado con éxito', post});        
+        } catch (error) {
+            console.log(error)                   
+            res.status(500).send({ message: 'Ha habido un problema al actualizar el post' })
         }
     }
 }
