@@ -5,9 +5,9 @@ const UserSchema = new mongoose.Schema({
     mail:{ type: String, unique: true },
     avatar: String,
     password: String,
-    // token: [],
+    tokens: [],
     confirmed: Boolean,
-    is_admin: Boolean,
+    role: String,
 }, { timestamps: true });
 
 const User = mongoose.model('User', UserSchema);
