@@ -5,10 +5,10 @@ const ObjectId = mongoose.SchemaTypes.ObjectId;
 const PostSchema = new mongoose.Schema({
     title: String,
     content:String,
-    userId: {
-        type: ObjectId,
-        ref: 'User'
-    },
+    comment: [{
+        userId:{type: ObjectId, ref: 'User'},
+        comment: String
+    }],
     
 }, { timestamps: true });
 

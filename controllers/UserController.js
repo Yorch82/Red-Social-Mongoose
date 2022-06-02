@@ -10,7 +10,7 @@ const UserController ={
             req.body.confirmed = false;
             req.body.role = "user";
             req.body.avatar = "../assets/defaultavatar.jpg"        
-            const password = bcrypt.hashSync(req.body.password,10);      
+            const password = bcrypt.hashSync(req.body.password,10);   //hashync?   
             const user = await User.create({...req.body,confirmed: req.body.confirmed, password:password});
             const emailToken = jwt.sign({mail:req.body.mail},jwt_secret,{expiresIn:'48h'});
             const url = 'http://localhost:8080/users/confirm/'+ emailToken;  
@@ -20,11 +20,9 @@ const UserController ={
                 html: `<h3>Bienvenido, estás a un paso de registrarte </h3>                
                 <a href="${url}"> Click para confirmar tu registro</a>
                 `,});            
-            res.status(201).send({
-                message: "Te hemos enviado un correo para confirmar el registro",
-                user,
-            })            
+            res.status(201).send({message: "Te hemos enviado un correo para confirmar el registro", user,})            
         } catch (err) {
+            console.log(err)
             err.origin = 'User';
             next(err);            
         }
@@ -49,7 +47,7 @@ const UserController ={
             await User.updateOne({mail: payload.mail}, {$set :{confirmed:true}});     
             res.status(201).send( "Usuario confirmado con exito" );        
         } catch (error) {        
-            console.error(error)        
+            console.error(error)                    
         }        
     },
     async logout(req, res) {
@@ -60,8 +58,7 @@ const UserController ={
           res.send({ message: "Desconectado con éxito" });
         } catch (error) {
           console.error(error);
-          res.status(500).send({
-            message: "Hubo un problema al intentar desconectar al usuario",
+          res.status(500).send({message: "Hubo un problema al intentar desconectar al usuario",
           });
         }
       },

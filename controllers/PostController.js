@@ -35,7 +35,16 @@ const PostController ={
             console.log(error)                   
             res.status(500).send({ message: 'Ha habido un problema al actualizar el post' })
         }
-    }
+    },
+    async getAll(req, res) {
+        try {        
+            const { page = 1, limit = 10 } = req.query;        
+            const posts = await Post.find().limit(limit * 1).skip((page - 1) * limit);        
+            res.send(posts);        
+        } catch (error) {        
+            console.error(error);        
+        }        
+    },
 }
 
 
