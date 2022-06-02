@@ -7,10 +7,13 @@ const { jwt_secret } = require('../config/keys');
 const UserController ={    
     async create(req,res,next){
         try {
+            let password;
+            if (req.body.password !== undefined){
+                password = bcrypt.hashSync(req.body.password,10);   //hashync?
+            }
             req.body.confirmed = false;
             req.body.role = "user";
-            req.body.avatar = "../assets/defaultavatar.jpg"        
-            const password = bcrypt.hashSync(req.body.password,10);   //hashync?   
+            req.body.avatar = "../assets/defaultavatar.jpg"              
             const user = await User.create({...req.body,confirmed: req.body.confirmed, password:password});
             const emailToken = jwt.sign({mail:req.body.mail},jwt_secret,{expiresIn:'48h'});
             const url = 'http://localhost:8080/users/confirm/'+ emailToken;  
@@ -62,7 +65,16 @@ const UserController ={
           });
         }
       },
-        
+    async checkLoggedUser(req,res) {
+        try{           
+            const user = await User.findOne({tokens: req.headers.authorization});            
+            res.status(201).send({ message: 'Usuario conectado: ', user});
+        } catch (error){
+        console.error(error);
+        res.status(500).send({message: "Hubo un problema al intentar recuperar usuario conectado",
+        });
+      }
+    }        
 }
 
 module.exports = UserController;
