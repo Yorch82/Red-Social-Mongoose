@@ -1,4 +1,5 @@
 const  User = require("../models/User");
+const Post = require("../models/Post");
 const bcrypt = require("bcryptjs");
 const transporter = require("../config/nodemailer");
 const jwt = require('jsonwebtoken');
@@ -74,7 +75,33 @@ const UserController ={
         res.status(500).send({message: "Hubo un problema al intentar recuperar usuario conectado",
         });
       }
-    }        
+    },
+    async like(req, res) {
+        try {        
+            const post = await Post.findByIdAndUpdate(        
+            req.params._id,        
+            { $push: { likes: req.user._id } },        
+            { new: true }        
+        );              
+        res.send(post);        
+        } catch (error) {        
+            console.error(error);        
+            res.status(500).send({ message: "Hubo un problema con tu like" });        
+        }        
+    },
+    async dislike(req, res) {
+        try {        
+            const post = await Post.findByIdAndUpdate(        
+            req.params._id,        
+            { $pull: { likes: req.user._id } },        
+            { new: true }        
+        );              
+        res.send(post);        
+        } catch (error) {        
+            console.error(error);        
+            res.status(500).send({ message: "Hubo un problema con tu like" });        
+        }        
+    },        
 }
 
 module.exports = UserController;

@@ -6,9 +6,8 @@ const PostSchema = new mongoose.Schema({
     title: String,
     content:String,    
     userId:{type: ObjectId, ref: 'User'},
-    commentIds:[{type: ObjectId, ref: 'Comment'}]    
-    
-    
+    commentIds:[{type: ObjectId, ref: 'Comment'}] ,   
+    likes: [{ type: ObjectId }]    
 }, { timestamps: true });
 
 const Post = mongoose.model('Post', PostSchema);
