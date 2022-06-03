@@ -3,7 +3,7 @@ const Post = require("../models/Post");
 const bcrypt = require("bcryptjs");
 const transporter = require("../config/nodemailer");
 const jwt = require('jsonwebtoken');
-const { jwt_secret } = require('../config/keys');
+require("dotenv").config();
 
 const UserController ={    
     async create(req,res,next){
