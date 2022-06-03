@@ -3,10 +3,16 @@ const ObjectId = mongoose.SchemaTypes.ObjectId;
 
 
 const PostSchema = new mongoose.Schema({
-    title: String,
-    content:String,    
+    title: {
+        type: String,
+        require: [true, "Por favor rellena el título del post"]
+    },    
+    content:{
+        type: String,
+        require: [true, "Por favor rellena el contenido del post"]
+    },        
     userId:{type: ObjectId, ref: 'User'},
-    commentIds:[{type: ObjectId, ref: 'Comment'}] ,   
+    commentIds:[{type: ObjectId, ref: 'Comment'}],   
     likes: [{ type: ObjectId }]    
 }, { timestamps: true });
 

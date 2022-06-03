@@ -44,9 +44,28 @@ const PostController ={
             .limit(limit * 1).skip((page - 1) * limit);        
             res.send(posts);        
         } catch (error) {        
-            console.error(error);        
+            console.error(error);
+            res.status(500).send({ message: 'Ha habido un problema al recuperar los post'});        
         }        
     },
+    async getById (req, res) {
+        try {
+            const post = await Post.findById(req.params._id);
+            res.status(201).send({ message: 'Post recuperado con éxito', post});
+        }catch (error){
+            console.error(error);
+            res.status(500).send({ message: 'Ha habido un problema al buscar el post por ID' });
+        }
+    },
+    async getByName (req, res) {
+        try {
+            const post = await Post.findOne ({title : req.params.title});
+            res.status(201).send({ message: 'Post recuperado con éxito', post});
+        } catch (error){
+            console.error(error);
+            res.status(500).send({ message: 'Ha habido un problema al buscar el post por nombre' });
+        }
+    }
 }
 
 
