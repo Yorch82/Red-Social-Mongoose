@@ -15,8 +15,7 @@ const authentication = async(req, res, next) => {
         }
         req.user = user;
         next();
-    } catch (error) {
-        console.error(error)
+    } catch (error) {        
         return res.status(500).send({ error, message: 'Ha habido un problema con el token' })
     }
 }
@@ -36,8 +35,7 @@ const isAuthor = async(req, res, next) => {
             return res.status(403).send({ message: 'Este post no es tuyo' });    
     }    
     next();    
-    } catch (error) {    
-        console.error(error)    
+    } catch (error) {           
         return res.status(500).send({ error, message: 'Ha habido un problema al comprobar la autoría del post'});    
     }
 }
@@ -48,8 +46,7 @@ const isAuthorComment = async(req, res, next) => {
             return res.status(403).send({ message: 'Este comentario no es tuyo' });    
     }    
     next();    
-    } catch (error) {    
-        console.error(error)    
+    } catch (error) {           
         return res.status(500).send({ error, message: 'Ha habido un problema al comprobar la autoría del comentario'});    
     }
 

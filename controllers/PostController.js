@@ -12,8 +12,7 @@ const PostController ={
                 userId: req.user._id,
             });                    
             res.status(201).send({ message: 'Post creado con éxito', post});        
-        } catch (error) {
-            console.log(error)       
+        } catch (error) {                  
             res.status(500).send({ message: 'Ha habido un problema al crear el post' })
         }
     },
@@ -35,8 +34,7 @@ const PostController ={
                 }             
             );        
             res.status(201).send({ message: 'Post actualizado con éxito', post});        
-        } catch (error) {
-            console.log(error)                   
+        } catch (error) {                               
             res.status(500).send({ message: 'Ha habido un problema al actualizar el post' })
         }
     },
@@ -47,8 +45,7 @@ const PostController ={
             .populate("commentIds")
             .limit(limit * 1).skip((page - 1) * limit);        
             res.send(posts);        
-        } catch (error) {        
-            console.error(error);
+        } catch (error) {            
             res.status(500).send({ message: 'Ha habido un problema al recuperar los post'});        
         }        
     },
@@ -56,8 +53,7 @@ const PostController ={
         try {
             const post = await Post.findById(req.params._id);
             res.status(201).send({ message: 'Post recuperado con éxito', post});
-        }catch (error){
-            console.error(error);
+        }catch (error){            
             res.status(500).send({ message: 'Ha habido un problema al buscar el post por ID' });
         }
     },
@@ -65,8 +61,7 @@ const PostController ={
         try {
             const post = await Post.findOne ({title : req.params.title});
             res.status(201).send({ message: 'Post recuperado con éxito', post});
-        } catch (error){
-            console.error(error);
+        } catch (error){            
             res.status(500).send({ message: 'Ha habido un problema al buscar el post por nombre' });
         }
     }

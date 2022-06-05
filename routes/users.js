@@ -9,8 +9,10 @@ router.post('/login',UserController.login);
 router.get('/getLoggedUser', authentication, UserController.checkLoggedUser);
 router.get('/confirm/:emailToken',UserController.confirm);
 router.put('/logout', authentication, UserController.logout);
-router.put('/likes/:_id', authentication, UserController.like);
-router.put('/dislikes/:_id', authentication, UserController.dislike);
+router.put('/likes/:_id', authentication, UserController.likePost);
+router.put('/dislikes/:_id', authentication, UserController.dislikePost);
+router.put('/likeComment/:_id', authentication, UserController.likeComment);
+router.put('/dislikeComment/:_id', authentication, UserController.dislikeComment);
 router.get('/getById/:_id', authentication, isAdmin, UserController.getById);
 router.get('/getByName/:name', authentication, isAdmin, UserController.getByName);
 

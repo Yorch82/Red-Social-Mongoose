@@ -1,5 +1,6 @@
 const  User = require("../models/User");
 const Post = require("../models/Post");
+const Comment = require("../models/Comment")
 const bcrypt = require("bcryptjs");
 const transporter = require("../config/nodemailer");
 const jwt = require('jsonwebtoken');
@@ -29,8 +30,7 @@ const UserController ={
                 <a href="${url}"> Click para confirmar tu registro</a>
                 `,});            
             res.status(201).send({message: "Te hemos enviado un correo para confirmar el registro", user,})            
-        } catch (err) {
-            console.log(err)
+        } catch (err) {            
             err.origin = 'User';
             next(err);            
         }
@@ -43,8 +43,7 @@ const UserController ={
             user.tokens.push(token);
             await user.save();
             res.send({ message: 'Bienvenid@ ' + user.name, token });
-        } catch (error) {
-            console.error(error) 
+        } catch (error) {             
             res.status(500).send({ message: 'Ha habido un problema en el login del usuario' })
         }
     },    
@@ -63,37 +62,33 @@ const UserController ={
           await User.findByIdAndUpdate(req.user._id, {
             $pull: { tokens: req.headers.authorization },
           });
-          res.send({ message: "Desconectado con éxito" });
-        } catch (error) {
-          console.error(error);
-          res.status(500).send({message: "Hubo un problema al intentar desconectar al usuario",
-          });
+          res.status(201).send({ message: "Desconectado con éxito"});
+        } catch (error) {          
+          res.status(500).send({message: "Hubo un problema al intentar desconectar al usuario"});
         }
-      },
+    },
     async checkLoggedUser(req,res) {
         try{           
             const user = await User.findOne({tokens: req.headers.authorization});            
             res.status(201).send({ message: 'Usuario conectado: ', user});
-        } catch (error){
-        console.error(error);
-        res.status(500).send({message: "Hubo un problema al intentar recuperar usuario conectado",
+        } catch (error){            
+            res.status(500).send({message: "Hubo un problema al intentar recuperar usuario conectado",
         });
       }
     },
-    async like(req, res) {
+    async likePost(req, res) {
         try {        
             const post = await Post.findByIdAndUpdate(        
             req.params._id,        
             { $push: { likes: req.user._id } },        
             { new: true }        
         );              
-        res.send(post);        
-        } catch (error) {        
-            console.error(error);        
-            res.status(500).send({ message: "Hubo un problema con tu like" });        
+            res.status(201).send(post);        
+        } catch (error) {                    
+            res.status(500).send({ message: "Hubo un problema con tu like al post" });        
         }        
     },
-    async dislike(req, res) {
+    async dislikePost(req, res) {
         try {        
             const post = await Post.findByIdAndUpdate(        
             req.params._id,        
@@ -101,17 +96,40 @@ const UserController ={
             { new: true }        
         );              
         res.send(post);        
-        } catch (error) {        
-            console.error(error);        
-            res.status(500).send({ message: "Hubo un problema con tu like" });        
+        } catch (error) {                    
+            res.status(500).send({ message: "Hubo un problema con tu dislike al post" });        
+        }        
+    },
+    async likeComment(req, res) {
+        try {        
+            const comment = await Comment.findByIdAndUpdate(        
+            req.params._id,        
+            { $push: { likes: req.user._id } },        
+            { new: true }        
+        );              
+            res.status(201).send(comment);        
+        } catch (error) {
+            console.error(error)                    
+            res.status(500).send({ message: "Hubo un problema con tu like al comenatario" });        
+        }        
+    },
+    async dislikeComment(req, res) {
+        try {        
+            const comment = await Comment.findByIdAndUpdate(        
+            req.params._id,        
+            { $pull: { likes: req.user._id } },        
+            { new: true }        
+        );              
+        res.status(201).send(comment);        
+        } catch (error) {                    
+            res.status(500).send({ message: "Hubo un problema con tu dislike al comentario" });        
         }        
     },
     async getById (req, res) {
         try {
             const user = await User.findById(req.params._id);
             res.status(201).send({ message: 'Usuario recuperado con éxito', user});
-        }catch (error){
-            console.error(error);
+        }catch (error){            
             res.status(500).send({ message: 'Ha habido un problema al buscar el usuario por ID' });
         }
     },
@@ -119,8 +137,7 @@ const UserController ={
         try {
             const user = await User.findOne ({title : req.params.name});
             res.status(201).send({ message: 'Usuario recuperado con éxito', user});
-        } catch (error){
-            console.error(error);
+        } catch (error){           
             res.status(500).send({ message: 'Ha habido un problema al buscar el usuario por nombre' });
         }
     }        
