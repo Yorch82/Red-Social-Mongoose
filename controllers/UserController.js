@@ -4,6 +4,7 @@ const bcrypt = require("bcryptjs");
 const transporter = require("../config/nodemailer");
 const jwt = require('jsonwebtoken');
 require("dotenv").config();
+const JWT_SECRET = process.env.JWT_SECRET;
 
 const UserController ={    
     async create(req,res,next){
@@ -11,12 +12,13 @@ const UserController ={
             let password;
             if (req.body.password !== undefined){
                 password = bcrypt.hashSync(req.body.password,10);   //hashync?
-            }
+            };
+            if (req.file)req.body.avatar = (req.file.destination + req.file.filename);
             req.body.confirmed = false;
             req.body.role = "user";
-            req.body.avatar = "../assets/defaultavatar.jpg"              
+            // req.body.avatar = "../assets/defaultavatar.jpg"              
             const user = await User.create({...req.body,confirmed: req.body.confirmed, password:password});
-            const emailToken = jwt.sign({mail:req.body.mail},jwt_secret,{expiresIn:'48h'});
+            const emailToken = jwt.sign({mail:req.body.mail},JWT_SECRET,{expiresIn:'48h'});
             const url = 'http://localhost:8080/users/confirm/'+ emailToken;  
             await transporter.sendMail({                
                 to: req.body.mail,                
@@ -34,7 +36,7 @@ const UserController ={
     async login(req, res) {
         try {
             const user = await User.findOne({email: req.body.email});
-            const token = jwt.sign({ _id: user._id }, jwt_secret);;
+            const token = jwt.sign({ _id: user._id }, JWT_SECRET);;
             if (user.tokens.length > 4) user.tokens.shift();
             user.tokens.push(token);
             await user.save();
@@ -47,7 +49,7 @@ const UserController ={
     async confirm(req,res){
         try {
             const token = req.params.emailToken;
-            const payload = jwt.verify(token,jwt_secret);  
+            const payload = jwt.verify(token,JWT_SECRET);  
             await User.updateOne({mail: payload.mail}, {$set :{confirmed:true}});     
             res.status(201).send( "Usuario confirmado con exito" );        
         } catch (error) {        
@@ -101,7 +103,25 @@ const UserController ={
             console.error(error);        
             res.status(500).send({ message: "Hubo un problema con tu like" });        
         }        
-    },        
+    },
+    async getById (req, res) {
+        try {
+            const user = await User.findById(req.params._id);
+            res.status(201).send({ message: 'Usuario recuperado con éxito', user});
+        }catch (error){
+            console.error(error);
+            res.status(500).send({ message: 'Ha habido un problema al buscar el usuario por ID' });
+        }
+    },
+    async getByName (req, res) {
+        try {
+            const user = await User.findOne ({title : req.params.name});
+            res.status(201).send({ message: 'Usuario recuperado con éxito', user});
+        } catch (error){
+            console.error(error);
+            res.status(500).send({ message: 'Ha habido un problema al buscar el usuario por nombre' });
+        }
+    }        
 }
 
 module.exports = UserController;
