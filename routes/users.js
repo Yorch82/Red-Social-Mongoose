@@ -15,5 +15,7 @@ router.put('/likeComment/:_id', authentication, UserController.likeComment);
 router.put('/dislikeComment/:_id', authentication, UserController.dislikeComment);
 router.get('/getById/:_id', authentication, isAdmin, UserController.getById);
 router.get('/getByName/:name', authentication, isAdmin, UserController.getByName);
+router.put('/follow/:_id', authentication, UserController.followUser);
+router.put('/unfollow/:_id', authentication, UserController.unfollowUser);
 
 module.exports = router;

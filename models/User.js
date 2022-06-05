@@ -20,6 +20,8 @@ const UserSchema = new mongoose.Schema({
     tokens: [],
     confirmed: Boolean,
     role: String,
+    followedBy: [{ type: ObjectId }],
+    followTo: [{ type: ObjectId}], 
     postIds: [{ type: ObjectId, ref: "Post" }],
     commentIds: [{ type: ObjectId, ref: "Comment" }],
 }, { timestamps: true });

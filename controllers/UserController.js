@@ -12,7 +12,7 @@ const UserController ={
         try {
             let password;
             if (req.body.password !== undefined){
-                password = bcrypt.hashSync(req.body.password,10);   //hashync?
+                password = bcrypt.hashSync(req.body.password,10);
             };
             if (req.file)req.body.avatar = (req.file.destination + req.file.filename);
             else{
@@ -122,7 +122,7 @@ const UserController ={
         );              
         res.status(201).send(comment);        
         } catch (error) {                    
-            res.status(500).send({ message: "Hubo un problema con tu dislike al comentario" });        
+            res.status(500).send({ message: "Hubo un problema con tu dislike al comentario"});        
         }        
     },
     async getById (req, res) {
@@ -130,7 +130,7 @@ const UserController ={
             const user = await User.findById(req.params._id);
             res.status(201).send({ message: 'Usuario recuperado con éxito', user});
         }catch (error){            
-            res.status(500).send({ message: 'Ha habido un problema al buscar el usuario por ID' });
+            res.status(500).send({ message: 'Ha habido un problema al buscar el usuario por ID'});
         }
     },
     async getByName (req, res) {
@@ -138,9 +138,45 @@ const UserController ={
             const user = await User.findOne ({title : req.params.name});
             res.status(201).send({ message: 'Usuario recuperado con éxito', user});
         } catch (error){           
-            res.status(500).send({ message: 'Ha habido un problema al buscar el usuario por nombre' });
+            res.status(500).send({ message: 'Ha habido un problema al buscar el usuario por nombre'});
         }
-    }        
+    },
+    async followUser (req, res) {
+        try{
+            const user = await User.findByIdAndUpdate(
+                req.params._id,        
+                { $push: { followedBy: req.user._id } },        
+                { new: true } 
+            )
+            const user2 = await User.findByIdAndUpdate(
+                req.user._id,                       
+                { $push: { followTo: req.params._id } },        
+                { new: true } 
+            )
+            res.status(201).send({user, user2});
+        } catch (error){
+            console.error(error)
+            res.status(500).send({ message: 'Ha habido un problema al seguir al usuario'});
+        }
+    },
+    async unfollowUser (req, res) {
+        try{
+            const user = await User.findByIdAndUpdate(
+                req.params._id,        
+                { $pull: { followedBy: req.user._id } },        
+                { new: true } 
+            )
+            const user2 = await User.findByIdAndUpdate(
+                req.user._id,                       
+                { $pull: { followTo: req.params._id } },        
+                { new: true } 
+            )
+            res.status(201).send({user, user2});
+        } catch (error){
+            console.error(error)
+            res.status(500).send({ message: 'Ha habido un problema al dejar de seguir al usuario'});
+        }
+    }       
 }
 
 module.exports = UserController;
