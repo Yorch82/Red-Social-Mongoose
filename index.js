@@ -14,4 +14,6 @@ app.use('/comments/', require('./routes/comments'));
 
 app.use(typeError);
 
+module.exports = app;
+
 app.listen(PORT, console.log(`🚀 Server started on port ${PORT}`));
