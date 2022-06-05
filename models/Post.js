@@ -10,7 +10,8 @@ const PostSchema = new mongoose.Schema({
     content:{
         type: String,
         require: [true, "Por favor rellena el contenido del post"]
-    },        
+    },
+    avatar: String,        
     userId:{type: ObjectId, ref: 'User'},
     commentIds:[{type: ObjectId, ref: 'Comment'}],   
     likes: [{ type: ObjectId }]    

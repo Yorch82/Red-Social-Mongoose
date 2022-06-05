@@ -14,9 +14,11 @@ const UserController ={
                 password = bcrypt.hashSync(req.body.password,10);   //hashync?
             };
             if (req.file)req.body.avatar = (req.file.destination + req.file.filename);
+            else{
+                req.body.avatar = "../assets/defaultavatar.jpg"
+            }
             req.body.confirmed = false;
-            req.body.role = "user";
-            // req.body.avatar = "../assets/defaultavatar.jpg"              
+            req.body.role = "user";                         
             const user = await User.create({...req.body,confirmed: req.body.confirmed, password:password});
             const emailToken = jwt.sign({mail:req.body.mail},JWT_SECRET,{expiresIn:'48h'});
             const url = 'http://localhost:8080/users/confirm/'+ emailToken;  

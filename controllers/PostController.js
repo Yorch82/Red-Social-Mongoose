@@ -2,7 +2,11 @@ const Post = require("../models/Post");
 
 const PostController ={
     async create(req,res){
-        try {        
+        try {
+            if (req.file)req.body.avatar = (req.file.destination + req.file.filename);
+            else{
+                req.body.avatar = "../assets/defaultavatar.jpg"
+            };        
             const post = await Post.create({
                 ...req.body,
                 userId: req.user._id,
