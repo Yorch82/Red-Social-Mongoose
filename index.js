@@ -6,8 +6,6 @@ const { dbConnection } = require("./config/config");
 const { typeError } = require('./middlewares/errors');
 app.use(express.json());
 
-
-
 dbConnection();
 
 app.use('/users', require('./routes/users'));
@@ -16,4 +14,4 @@ app.use('/comments/', require('./routes/comments'));
 
 app.use(typeError);
 
-app.listen(PORT, console.log(`Server started on port ${PORT}`));
+app.listen(PORT, console.log(`🚀 Server started on port ${PORT}`));
