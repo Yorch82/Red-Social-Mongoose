@@ -6,13 +6,7 @@ require("dotenv").config();
 const JWT_SECRET = process.env.JWT_SECRET;
 const jwt = require('jsonwebtoken');
 const bcrypt = require("bcryptjs");
-const transporter = require("../config/nodemailer");
 const { mock } = require('../__mocks__/nodemailer');
-
-beforeEach(() =>{
-  // sendMailMock.mockClear();
-  // transporter.createTransport.mockClear();
-})
 
 describe("testing/users", () => {
     beforeAll(async() => await dbConnection());
