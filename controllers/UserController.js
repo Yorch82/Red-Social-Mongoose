@@ -21,14 +21,14 @@ const UserController ={
             req.body.confirmed = false;
             req.body.role = "user";                         
             const user = await User.create({...req.body,confirmed: req.body.confirmed, password});
-            // const emailToken = jwt.sign({mail:req.body.mail},JWT_SECRET,{expiresIn:'48h'});
-            // const url = 'http://localhost:8080/users/confirm/'+ emailToken;  
-            // await transporter.sendMail({                
-            //     to: req.body.mail,                
-            //     subject: "Confirme su registro",                
-            //     html: `<h3>Bienvenido, estás a un paso de registrarte </h3>                
-            //     <a href="${url}"> Click para confirmar tu registro</a>
-            //     `,});            
+            const emailToken = jwt.sign({mail:req.body.mail},JWT_SECRET,{expiresIn:'48h'});
+            const url = 'http://localhost:8080/users/confirm/'+ emailToken;  
+            await transporter.sendMail({                
+                to: req.body.mail,                
+                subject: "Confirme su registro",                
+                html: `<h3>Bienvenido, estás a un paso de registrarte </h3>                
+                <a href="${url}"> Click para confirmar tu registro</a>
+                `,});            
             res.status(201).send({message: "Te hemos enviado un correo para confirmar el registro", user,})            
         } catch (err) {            
             err.origin = 'User';
@@ -62,7 +62,7 @@ const UserController ={
           await User.findByIdAndUpdate(req.user._id, {
             $pull: { tokens: req.headers.authorization },
           });
-          res.status(201).send({ message: "Desconectado con éxito"});
+          res.status(200).send({ message: "Desconectado con éxito"});
         } catch (error) {          
           res.status(500).send({message: "Hubo un problema al intentar desconectar al usuario"});
         }
@@ -176,7 +176,18 @@ const UserController ={
             console.error(error)
             res.status(500).send({ message: 'Ha habido un problema al dejar de seguir al usuario'});
         }
-    }       
+    },
+    async getAll(req, res) {
+        try {        
+            const { page = 1, limit = 10 } = req.query;        
+            const users = await User.find()
+            // .populate("commentIds")
+            .limit(limit * 1).skip((page - 1) * limit);        
+            res.send(users);        
+        } catch (error) {            
+            res.status(500).send({ message: 'Ha habido un problema al recuperar los usuarios'});        
+        }        
+    },       
 }
 
 module.exports = UserController;

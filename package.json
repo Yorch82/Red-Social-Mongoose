@@ -4,8 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",    
+    "start": "node index.js",
     "dev": "nodemon index.js",
+    "test": "jest",
     "test:watch": "jest --watchAll"
   },
   "keywords": [],
@@ -22,6 +23,8 @@
   },
   "devDependencies": {
     "jest": "^28.1.0",
+    "mockery": "^2.1.0",
+    "nodemailer-mock": "^1.5.12",
     "nodemon": "2.0.16",
     "supertest": "^6.2.3"
   }
