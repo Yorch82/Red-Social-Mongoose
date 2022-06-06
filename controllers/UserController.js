@@ -10,14 +10,14 @@ const JWT_SECRET = process.env.JWT_SECRET;
 const UserController ={    
     async create(req,res,next){
         try {
-            let password;
-            if (req.body.password !== undefined){
-                password = bcrypt.hashSync(req.body.password,10);
-            };
             if (req.file)req.body.avatar = (req.file.destination + req.file.filename);
             else{
                 req.body.avatar = "../assets/defaultavatar.jpg"
             }
+            let password;
+            if (req.body.password !== undefined){
+                password = bcrypt.hashSync(req.body.password,10);
+            };           
             req.body.confirmed = false;
             req.body.role = "user";                         
             const user = await User.create({...req.body,confirmed: req.body.confirmed, password});
@@ -143,17 +143,22 @@ const UserController ={
     },
     async followUser (req, res) {
         try{
-            const user = await User.findByIdAndUpdate(
-                req.params._id,        
-                { $push: { followedBy: req.user._id } },        
-                { new: true } 
-            )
-            const user2 = await User.findByIdAndUpdate(
-                req.user._id,                       
-                { $push: { followTo: req.params._id } },        
-                { new: true } 
-            )
-            res.status(201).send({user, user2});
+            const user = await User.findById(req.params._id);
+            if (user.followers.includes(req.user._id)) {
+                res.send('Ya estás siguiendo a este usuario');
+            } else {
+                const user = await User.findByIdAndUpdate(
+                    req.params._id,        
+                    { $push: { followedBy: req.user._id } },        
+                    { new: true } 
+                )
+                const user2 = await User.findByIdAndUpdate(
+                    req.user._id,                       
+                    { $push: { followTo: req.params._id } },        
+                    { new: true } 
+                )
+                res.status(201).send({user, user2});
+            }
         } catch (error){
             console.error(error)
             res.status(500).send({ message: 'Ha habido un problema al seguir al usuario'});
