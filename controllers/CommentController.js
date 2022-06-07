@@ -1,8 +1,10 @@
 const Comment = require("../models/Comment");
 const Post = require("../models/Post");
+const User = require("../models/User");
+
 
 const CommentController ={
-    async create(req,res){
+    async create(req,res, next){
         try {
             if (req.file)req.body.avatar = (req.file.destination + req.file.filename);
             else{
@@ -12,6 +14,7 @@ const CommentController ={
                 { ...req.body, userId: req.user._id, postId: req.body.postId }
             );            
             await Post.findByIdAndUpdate(req.body.postId,{$push:{commentIds: comment._id}})
+            await User.findByIdAndUpdate(req.user._id,{$push:{commentIds: comment._id}})            
             res.send(comment);            
             } catch (err) {                            
                 err.origin = 'Comment';
