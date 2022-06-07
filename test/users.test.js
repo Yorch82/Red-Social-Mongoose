@@ -78,8 +78,7 @@ describe("testing/users", () => {
       const res = await request(app)
         .put("/users/logout")
         .set({ Authorization: token })
-        .expect(200);
-        console.log(res.body.message)
+        .expect(200);        
         expect(res.body.message).toBe("Desconectado con éxito");
     });
   

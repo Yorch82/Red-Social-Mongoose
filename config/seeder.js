@@ -19,7 +19,7 @@ const importData = async () => {
 		console.log('Data Imported');
 		process.exit();
 	} catch (error) {
-		console.log(error);
+		console.error(error);
 		process.exit(1);
 	}
 };
@@ -33,7 +33,7 @@ const deleteData = async () => {
 		console.log('Data destroyed');
 		process.exit();
 	} catch (err) {
-		console.log(error);
+		console.error(err);
 		process.exit(1);
 	}
 };
