@@ -93,30 +93,51 @@ que el alumno desarrolle una API REST que sea capaz de lo siguiente:
 
 ## Endpoints
 
+Enlace a la documentación de Postman:
+
+   ```sh
+    https://documenter.getpostman.com/view/21013418/Uz5KkEKu
+   ```
+
 Esta es una lista de los Endpoints del proyecto que puedes ejecutar en Postman:
 
-| Metodo | Endpoint                       | Rol   | Funcion                                   |
+USUARIOS:
+
+| Metodo | Endpoint                       | Rol     | Funcion                               |
 | ------ | ------------------------------ | ------- | ------------------------------------- |
-| POST   | `/users/createUser`            | user    | Crear nuevo usuario                   |
+| POST   | `/users/`                      | user    | Crear nuevo usuario                   |
 | POST   | `/users/login`                 | user    | Login                                 |
-| DELETE | `/users/logout`                | user    | Logout                                |
-| GET    | `/users/UserOrder`             | user    | Pedidos por usuario                   |
-| POST   | `/books/addBooks`              | manager | Añadir libros a base datos            |
-| GET    | `/books/getBooks`              | user    | Recibe lista de libros                |
-| DELETE | `/books/deleteBook/id/:id`     | manager | Borrar libro por id                   |
-| GET    | `/books/id/:id`                | user    | Buscar libro por id                   |
-| PUT    | `/books/:id`                   | admin   | Actualizar datos de un libro          |
-| GET    | `/books/search/title/:title`   | user    | Buscar libros por título              |
-| GET    | `/books/search/price/:price`   | user    | Buscar libros pro precio              |
-| GET    | `/books/getBooksOrdered`       | user    | Recibe lista libros ordenado          |
-| POST   | `/orders/createOrder`          | user    | Crear pedido                          |
-| GET    | `/orders/getAll`               | user    | Recibe lista de pedidos               |
-| POST   | `/genres/addGenre`             | manager | Añadir género                         |
-| GET    | `/genres/getGenreById/:id`     | user    | Busca género por id                   |
-| GET    | `/genres/getGenreByName/:name` | user    | Busca género por nombre               |
-| GET    | `/genres/getGenre`             | user    | Lista total de géneros con sus libros |
-| GET    | `/genres/getAll`               | user    | Lista total de géneros                |
-| DELETE | `/genres/deleteGenre/:id`      | manager | Borra un género por su id             |
+| PUT    | `/users/logout`                | user    | Logout                                |
+| GET    | `/users/getLoggedUser`         | user    | Obtienes usuario loggeado             |
+| PUT    | `/users/likes/:_id`            | user    | Dar Like a post                       |
+| PUT    | `/users/dislikes/:_id`         | user    | Quitar like a post                    |
+| PUT    | `/users/likeComment/:_id`      | user    | Dar like a comentario                 |
+| PUT    | `/users/dislikeComment/:id`    | user    | Quitar like a comentario              |
+| GET    | `/users/getById/:_id`          | admin   | Recupera un usuario por ID            |
+| GET    | `/users/getByName/:_id_`       | admin   | Recupera un Usuario por nombre        |
+| PUT    | `/users/follow/:_id`           | user    | Seguir a un usuario                   |
+| PUT    | `/users/unfollow/:_id`         | user    | Dejar de seguir a usuario             |
+| GET    | `/users/getAll     `           | admin   | Crear pedido                          |
+
+POST:
+
+| Metodo | Endpoint                       | Rol     | Funcion                               |
+| ------ | ------------------------------ | ------- | ------------------------------------- |
+| POST   | `/posts/`                      | user    | Crear nuevo post                      |
+| DELETE | `/posts/delete/:_id            | user    | Borrar pos por ID                     |
+| PUT    | `/posts/update/:_id`           | user    | Actualizar post por ID                |
+| GET    | `/posts/getAll`                | admin   | Recupera todos los posts              |
+| GET    | `/posts/getById/:_id`          | admin   | Recupera post por ID                  |
+| GET    | `/posts/getByName/:title`      | admin   | Recupera post por Nombre              |
+
+COMMENTS
+
+| Metodo | Endpoint                       | Rol     | Funcion                               |
+| ------ | ------------------------------ | ------- | ------------------------------------- |
+| POST   | `/comments/`                   | user    | Crear nuevo comentario                |
+| GET    | `/comments/getAll`             | admin   | Recupera todos los comentarios        |
+| PUT    | `/comments/update/:_id`        | user    | Actualiza comentario                  |
+| DELETE | `/comments/delete/:_id`        | user    | Borra comentario                      |
 
 <!-- ROADMAP -->
 
