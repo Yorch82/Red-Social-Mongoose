@@ -156,7 +156,7 @@ const UserController ={
     async followUser (req, res) {
         try{
             const user = await User.findById(req.params._id);
-            if (user.followers.includes(req.user._id)) {
+            if (user.followedBy.includes(req.user._id)) {
                 res.send('Ya estás siguiendo a este usuario');
             } else {
                 const user = await User.findByIdAndUpdate(

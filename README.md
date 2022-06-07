@@ -47,6 +47,7 @@ Aquí presentamos las herramientas empleadas en este proyecto:
 - [Postman](https://www.postman.com/)
 - [JWT](https://jwt.io/)
 - [Heroku](https://www.heroku.com)
+- [Jest](https://jestjs.io/)
 
 <!-- DESCRIPCION -->
 
@@ -74,6 +75,12 @@ que el alumno desarrolle una API REST que sea capaz de lo siguiente:
    ```sh
    npm install
    ```
+3. Seeders:
+    ```sh
+   npm run data:destroy -> Vacía la Base de datos
+   npm run data:import -> Rellena colecciones con datos de prueba
+   ```
+
 
 <!-- EJEMPLOS DE USO -->
 
@@ -108,8 +115,8 @@ Esta es una lista de los Endpoints del proyecto que puedes ejecutar en Postman:
 
 ## Experiencia
 
-- [x] Hemos perfeccinado el trabajo en equipo mediante Git haciendo uso de distintas ramas de desarrollo para cada aspecto requerido en el proyecto.
-- [x] Nos hemos servido de Trello para organizar la distribución del trabajo y optimizar el proceso.
+- [x] He implementado testing con Jest teniendo que mockear el nodemailer para que no falle el test.
+- [x] Implementado modelo seeders "casero"
 - [x] Hemos perfeccionado la realización de pruebas API con el uso de Postman.
 
 <!-- LICENCIA -->
@@ -132,3 +139,4 @@ Jorge - [gitHub](https://github.com/yorch82)
 - [x] MongoDB
 - [x] Mongoose
 - [x] Deploy Heroku
+- [x] Testing con Jest
