@@ -4,14 +4,18 @@ const User = require('../models/User');
 const posts = require('../seeders/posts');
 const Post = require('../models/Post');
 const { dbConnection } = require("./config");
+// const { find } = require('../models/Post');
 dotenv.config();
 
 dbConnection();
 
 const importData = async () => {
-	try {		     
+	try {
+		const usersIDs = [];
+		const  papa = await Post.insertMany(posts);		     
 		await User.insertMany(users);
-        await Post.insertMany(posts);
+		const idUser = await User.find({ name: 'Yorch'})		
+		const prueba = await Post.updateMany({}, {$set : {userId: idUser[0]._id} })        
 		console.log('Data Imported');
 		process.exit();
 	} catch (error) {

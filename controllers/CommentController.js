@@ -13,8 +13,9 @@ const CommentController ={
             );            
             await Post.findByIdAndUpdate(req.body.postId,{$push:{commentIds: comment._id}})
             res.send(comment);            
-            } catch (error) {                            
-                res.status(500).send({ message: "Hubo un problema con el comentario" });            
+            } catch (err) {                            
+                err.origin = 'Comment';
+                next(err);           
             }
     },
     async getAll(req, res) {

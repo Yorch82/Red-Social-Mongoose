@@ -77,13 +77,19 @@ const UserController ={
       }
     },
     async likePost(req, res) {
-        try {        
-            const post = await Post.findByIdAndUpdate(        
-            req.params._id,        
-            { $push: { likes: req.user._id } },        
-            { new: true }        
-        );              
-            res.status(201).send(post);        
+        try {
+            const post = await Post.findById(req.params._id);
+            if (post.likes.includes(req.user._id)) {
+                res.send('Ya le diste a like a este post');
+            } else {
+                const post = await Post.findByIdAndUpdate(        
+                    req.params._id,        
+                    { $push: { likes: req.user._id } },        
+                    { new: true }
+                )
+                res.status(201).send(post);
+        }        
+                    
         } catch (error) {                    
             res.status(500).send({ message: "Hubo un problema con tu like al post" });        
         }        
@@ -101,13 +107,19 @@ const UserController ={
         }        
     },
     async likeComment(req, res) {
-        try {        
-            const comment = await Comment.findByIdAndUpdate(        
-            req.params._id,        
-            { $push: { likes: req.user._id } },        
-            { new: true }        
-        );              
-            res.status(201).send(comment);        
+        try {
+            const comment = await Comment.findById(req.params._id);
+            if (comment.likes.includes(req.user._id)) {
+                res.send('Ya le diste a like a este comentario');
+            } else {
+                const comment = await Comment.findByIdAndUpdate(        
+                    req.params._id,        
+                    { $push: { likes: req.user._id } },        
+                    { new: true }
+                )
+                res.status(201).send(comment);
+            };                     
+                    
         } catch (error) {
             console.error(error)                    
             res.status(500).send({ message: "Hubo un problema con tu like al comenatario" });        

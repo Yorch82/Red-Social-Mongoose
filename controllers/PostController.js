@@ -12,8 +12,9 @@ const PostController ={
                 userId: req.user._id,
             });                    
             res.status(201).send({ message: 'Post creado con éxito', post});        
-        } catch (error) {                  
-            res.status(500).send({ message: 'Ha habido un problema al crear el post' })
+        } catch (err) {                  
+            err.origin = 'Post';
+            next(err);
         }
     },
     async delete(req,res){
@@ -43,6 +44,7 @@ const PostController ={
             const { page = 1, limit = 10 } = req.query;        
             const posts = await Post.find()
             .populate("commentIds")
+            .populate("userId")
             .limit(limit * 1).skip((page - 1) * limit);        
             res.send(posts);        
         } catch (error) {            
