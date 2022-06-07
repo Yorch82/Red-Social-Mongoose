@@ -22,8 +22,7 @@ const typeError = (err, req, res, next) => {
         if (errOrigin === undefined) {
             res.status(500).send('Se ha producido un error de origen desconocido');
         } else {
-            res.status(500).send(`Hubo un problema a la hora de crear un ${errOrigin}`);
-            
+            res.status(500).send(`Hubo un problema a la hora de crear un ${errOrigin}`);            
         }  
 }
 
