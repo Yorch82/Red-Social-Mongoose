@@ -198,7 +198,7 @@ const UserController ={
         try {        
             const { page = 1, limit = 10 } = req.query;        
             const users = await User.find()
-            // .populate("commentIds")
+            .populate("commentIds")
             .limit(limit * 1).skip((page - 1) * limit);        
             res.send(users);        
         } catch (error) {            

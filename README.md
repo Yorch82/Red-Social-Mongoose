@@ -41,13 +41,16 @@ El proyecto consistirá en una red social.
 Aquí presentamos las herramientas empleadas en este proyecto:
 
 - [Node.js](https://node.org/)
-- [MongoDB](https://expressjs.com/)
-- [Mongoose](https://sequelize.org/)
+- [Express](https://expressjs.com/es/)
+- [MongoDB](https://www.mongodb.com/)
+- [Mongoose](https://mongoosejs.com/)
 - [Multer](https://github.com/expressjs/multer)
 - [Postman](https://www.postman.com/)
+- [Bcryptjs](https://www.npmjs.com/package/bcryptjs)
 - [JWT](https://jwt.io/)
 - [Heroku](https://www.heroku.com)
 - [Jest](https://jestjs.io/)
+- [nodemailer-mock](https://github.com/doublesharp/nodemailer-mock#readme)
 
 <!-- DESCRIPCION -->
 
@@ -80,7 +83,11 @@ que el alumno desarrolle una API REST que sea capaz de lo siguiente:
    npm run data:destroy -> Vacía la Base de datos
    npm run data:import -> Rellena colecciones con datos de prueba
    ```
-
+4. Testing:
+    ```sh
+    Cambiar valor variable DB = false en .env    
+    npm test:watch
+   ```
 
 <!-- EJEMPLOS DE USO -->
 
@@ -115,7 +122,7 @@ Esta es una lista de los Endpoints del proyecto que puedes ejecutar en Postman:
 
 ## Experiencia
 
-- [x] He implementado testing con Jest teniendo que mockear el nodemailer para que no falle el test.
+- [x] Implementado testing con Jest teniendo que ahcer mocking a nodemailer para que no falle el test.
 - [x] Implementado modelo seeders "casero"
 - [x] Hemos perfeccionado la realización de pruebas API con el uso de Postman.
 
@@ -140,3 +147,5 @@ Jorge - [gitHub](https://github.com/yorch82)
 - [x] Mongoose
 - [x] Deploy Heroku
 - [x] Testing con Jest
+- [x] Swagger
+
