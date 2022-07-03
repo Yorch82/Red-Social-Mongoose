@@ -37,7 +37,7 @@ const UserController ={
     },  
     async login(req, res) {
         try {
-            const user = await User.findOne({email: req.body.email});
+            const user = await User.findOne({mail: req.body.mail});
             const token = jwt.sign({ _id: user._id }, JWT_SECRET);;
             if (user.tokens.length > 4) user.tokens.shift();
             user.tokens.push(token);
