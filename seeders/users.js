@@ -4,7 +4,7 @@ const users = [
 	{		
 		name: 'Yorch',
 		mail: 'admin@admin.com',
-        avatar:'../assets/defaultavatar.jpg',
+        avatar:'/assets/defaultavatar.jpg',
 		password: bcrypt.hashSync('password',10),
 		role: 'admin',
         confirmed: true
@@ -13,7 +13,7 @@ const users = [
 	{
 		name: 'Obi Wan Kenobi',
 		mail: 'lasthope@email.com',
-        avatar:'../assets/defaultavatar.jpg',
+        avatar:'/assets/defaultavatar.jpg',
 		password: bcrypt.hashSync('password',10),
         role: 'user',
         confirmed: true
@@ -21,7 +21,7 @@ const users = [
 	{
 		name: 'Rey Skywalker',
 		mail: 'sucks@sucks.com',
-        avatar:'../assets/defaultavatar.jpg',
+        avatar:'/assets/defaultavatar.jpg',
 		password: bcrypt.hashSync('password',10),
         role: 'user',
         confirmed: true
@@ -29,7 +29,7 @@ const users = [
 	{
 		name: 'John Don',
 		mail: 'John@John.com',
-        avatar:'../assets/defaultavatar.jpg',
+        avatar:'/assets/defaultavatar.jpg',
 		password: bcrypt.hashSync('password',10),
         role: 'user',
         confirmed: true

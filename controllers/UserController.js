@@ -2,7 +2,7 @@ const  User = require("../models/User");
 const Post = require("../models/Post");
 const Comment = require("../models/Comment")
 const bcrypt = require("bcryptjs");
-const transporter = require("../config/nodemailer");
+// const transporter = require("../config/nodemailer");
 const jwt = require('jsonwebtoken');
 require("dotenv").config();
 const JWT_SECRET = process.env.JWT_SECRET;
@@ -18,7 +18,7 @@ const UserController ={
             if (req.body.password !== undefined){
                 password = bcrypt.hashSync(req.body.password,10);
             };           
-            req.body.confirmed = false;
+            req.body.confirmed = true;
             req.body.role = "user";                         
             const user = await User.create({...req.body,confirmed: req.body.confirmed, password});
             const emailToken = jwt.sign({mail:req.body.mail},JWT_SECRET,{expiresIn:'48h'});
@@ -42,7 +42,7 @@ const UserController ={
             if (user.tokens.length > 4) user.tokens.shift();
             user.tokens.push(token);
             await user.save();
-            res.send({ message: 'Bienvenid@ ' + user.name, token });
+            res.send({ message: 'Bienvenid@ ', user, token });
         } catch (error) {             
             res.status(500).send({ message: 'Ha habido un problema en el login del usuario' })
         }

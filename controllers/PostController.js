@@ -2,7 +2,7 @@ const Post = require("../models/Post");
 const User = require("../models/User");
 
 const PostController ={
-    async create(req,res){
+    async create(req,res,next){
         try {
             if (req.file)req.body.avatar = (req.file.destination + req.file.filename);
             else{
@@ -64,7 +64,7 @@ const PostController ={
     async getByName (req, res) {
         try {
             const post = await Post.findOne ({title : req.params.title});
-            res.status(201).send({ message: 'Post recuperado con éxito', post});
+            res.status(201).send(post);
         } catch (error){            
             res.status(500).send({ message: 'Ha habido un problema al buscar el post por nombre' });
         }
