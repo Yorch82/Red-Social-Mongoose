@@ -12,7 +12,7 @@ const UserController ={
         try {
             if (req.file)req.body.avatar = (req.file.destination + req.file.filename);
             else{
-                req.body.avatar = "../assets/defaultavatar.jpg"
+                req.body.avatar = "/assets/defaultavatar.jpg"
             }
             let password;
             if (req.body.password !== undefined){
@@ -69,7 +69,14 @@ const UserController ={
     },
     async checkLoggedUser(req,res) {
         try{           
-            const user = await User.findOne({tokens: req.headers.authorization});            
+            const user = await User.findOne({tokens: req.headers.authorization})
+            .populate({
+                path: "postIds",
+                populate: {
+                    path: "commentIds"
+                }
+            })
+            .populate("likeIds")            
             res.status(201).send({ message: 'Usuario conectado: ', user});
         } catch (error){            
             res.status(500).send({message: "Hubo un problema al intentar recuperar usuario conectado",
@@ -204,6 +211,22 @@ const UserController ={
         } catch (error) {            
             res.status(500).send({ message: 'Ha habido un problema al recuperar los usuarios'});        
         }        
+    },
+    async getInfo(req, res) {
+        try {
+            const user = await User.findById(req.user._id)
+            .populate({
+                path: "postIds",
+                populate: {
+                    path: "commentIds"
+                }
+            })
+            // .populate("likeIDs")
+            res.send(user)
+        } catch (error) {
+            console.error(error)
+            res.status(500).send({ message: 'Ha habido un problema al cargar la información del vecino' })
+        }
     },       
 }
 

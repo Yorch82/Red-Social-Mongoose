@@ -19,5 +19,6 @@ router.get('/getByName/:name', authentication, isAdmin, UserController.getByName
 router.put('/follow/:_id', authentication, UserController.followUser);
 router.put('/unfollow/:_id', authentication, UserController.unfollowUser);
 router.get('/getAll', UserController.getAll);
+router.get('/getInfo', authentication, UserController.getInfo);
 
 module.exports = router;

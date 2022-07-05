@@ -63,7 +63,8 @@ const PostController ={
     },
     async getByName (req, res) {
         try {
-            const post = await Post.findOne ({title : req.params.title});
+            const title = new RegExp(req.params.title, "i");
+            const post = await Post.findOne ({title});
             res.status(201).send(post);
         } catch (error){            
             res.status(500).send({ message: 'Ha habido un problema al buscar el post por nombre' });
