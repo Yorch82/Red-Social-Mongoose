@@ -30,7 +30,8 @@ const UserController ={
                 <a href="${url}"> Click para confirmar tu registro</a>
                 `,});            
             res.status(201).send({message: "Te hemos enviado un correo para confirmar el registro", user,})            
-        } catch (err) {            
+        } catch (err) {
+            console.log(err)            
             err.origin = 'User';
             next(err);            
         }
