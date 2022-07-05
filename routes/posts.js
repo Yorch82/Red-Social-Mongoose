@@ -5,11 +5,11 @@ const { authentication, isAdmin, isAuthor } = require("../middlewares/authentica
 require("dotenv").config();
 const { upload } = require('../middlewares/multer');
 
-router.post('/',authentication, upload.single('myFile'), PostController.create);
-router.delete('/delete/:_id',authentication, isAuthor,PostController.delete);
-router.put('/update/:_id',authentication, isAuthor,PostController.update);
-router.get('/getAll', authentication, isAdmin, PostController.getAll);
-router.get('/getById/:_id', authentication, isAdmin, PostController.getById);
-router.get('/getByName/:title', authentication, isAdmin, PostController.getByName);
+router.post('/',authentication,  upload.single('myFile'), PostController.create);
+router.delete('/delete/:_id',PostController.delete);
+router.put('/update/:_id',authentication,PostController.update);
+router.get('/getAll', PostController.getAll);
+router.get('/getById/:_id', authentication, PostController.getById);
+router.get('/getByName/:title', PostController.getByName);
 
 module.exports = router;

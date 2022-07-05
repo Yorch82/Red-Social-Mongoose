@@ -5,7 +5,7 @@ const { authentication, isAdmin, isAuthor } = require("../middlewares/authentica
 const { upload } = require('../middlewares/multer');
 const User = require('../models/User');
 
-router.post('/', upload.single('myFile'), UserController.create);
+router.post('/',  UserController.create);
 router.post('/login',UserController.login);
 router.get('/getLoggedUser', authentication, UserController.checkLoggedUser);
 router.get('/confirm/:emailToken',UserController.confirm);
@@ -19,5 +19,8 @@ router.get('/getByName/:name', authentication, isAdmin, UserController.getByName
 router.put('/follow/:_id', authentication, UserController.followUser);
 router.put('/unfollow/:_id', authentication, UserController.unfollowUser);
 router.get('/getAll', UserController.getAll);
+router.get('/getInfo', authentication, UserController.getInfo);
 
 module.exports = router;
+
+// upload.single('myFile'),

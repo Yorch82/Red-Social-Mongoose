@@ -2,11 +2,11 @@ const Post = require("../models/Post");
 const User = require("../models/User");
 
 const PostController ={
-    async create(req,res){
+    async create(req,res,next){
         try {
             if (req.file)req.body.avatar = (req.file.destination + req.file.filename);
             else{
-                req.body.avatar = "../assets/defaultavatar.jpg"
+                req.body.avatar = "/assets/jedi.jpg"
             };        
             const post = await Post.create({
                 ...req.body,
@@ -43,7 +43,7 @@ const PostController ={
     },
     async getAll(req, res) {
         try {        
-            const { page = 1, limit = 10 } = req.query;        
+            const { page = 1, limit = 20 } = req.query;        
             const posts = await Post.find()
             .populate("commentIds")
             .populate("userId")
@@ -63,8 +63,9 @@ const PostController ={
     },
     async getByName (req, res) {
         try {
-            const post = await Post.findOne ({title : req.params.title});
-            res.status(201).send({ message: 'Post recuperado con éxito', post});
+            const title = new RegExp(req.params.title, "i");
+            const post = await Post.findOne ({title});
+            res.status(201).send(post);
         } catch (error){            
             res.status(500).send({ message: 'Ha habido un problema al buscar el post por nombre' });
         }
