@@ -5,13 +5,14 @@ const User = require("../models/User");
 
 const CommentController ={
     async create(req,res, next){
+        console.log(req.body)
         try {
             if (req.file)req.body.avatar = (req.file.destination + req.file.filename);
             else{
                 req.body.avatar = "../assets/defaultavatar.jpg"
             }
             const comment = await Comment.create(                
-                { ...req.body, userId: req.user._id, postId: req.body.postId }
+                { ...req.body, userId: req.user._id, postId: req.body.postId}
             );            
             await Post.findByIdAndUpdate(req.body.postId,{$push:{commentIds: comment._id}})
             await User.findByIdAndUpdate(req.user._id,{$push:{commentIds: comment._id}})            
@@ -20,6 +21,25 @@ const CommentController ={
                 err.origin = 'Comment';
                 next(err);           
             }
+        // try {
+        //     if (req.file)req.body.imagepath = req.file.filename;            
+        //     const exist = await Post.findById(req.body._id)         
+        //     if(exist){
+        //     const comment = await Comment.create({
+        //         ...req.body,
+        //         userId: req.user._id,
+        //         postId: req.body._id
+        //     })
+        //     await Post.findByIdAndUpdate
+        //     (req.body._id,
+        //         {$push: {comments: comment._id}})
+        //         res.status(201).send(comment)
+        //     } else res.status(400).send({message: "This post doesn't exist"});
+        // } catch (error) {
+        //     console.log(error);
+        //   error.origin = "Comment";
+        //   next(error);
+        // }
     },
     async getAll(req, res) {
         try {        

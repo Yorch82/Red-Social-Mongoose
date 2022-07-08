@@ -12,6 +12,6 @@ const generateUpload = path => multer({
     limits: { fileSize: 2 * 1024 * 1024 }
 });
 
-const upload = generateUpload ('./assets');
+const upload = generateUpload ('./public/assets/');
 
 module.exports ={upload};

@@ -31,7 +31,7 @@ const UserController ={
             //     `,});            
             res.status(201).send({message: "Te hemos enviado un correo para confirmar el registro", user,})            
         } catch (err) {
-            console.log(err)            
+            console.error(err)            
             err.origin = 'User';
             next(err);            
         }
@@ -90,11 +90,13 @@ const UserController ={
             if (post.likes.includes(req.user._id)) {
                 res.send('Ya le diste a like a este post');
             } else {
-                const post = await Post.findByIdAndUpdate(        
-                    req.params._id,        
-                    { $push: { likes: req.user._id } },        
-                    { new: true }
+                const post = await Post.findByIdAndUpdate(
+                  req.params._id,
+                  { $push: { likes: req.user._id } },
+                  { new: true }
                 )
+                .populate('commentIds')
+                .populate('userId');
                 res.status(201).send(post);
         }        
                     
@@ -107,9 +109,11 @@ const UserController ={
             const post = await Post.findByIdAndUpdate(        
             req.params._id,        
             { $pull: { likes: req.user._id } },        
-            { new: true }        
-        );              
-        res.send(post);        
+            { new: true }                    
+        )
+        .populate('commentIds')
+        .populate('userId');              
+        res.status(201).send(post);        
         } catch (error) {                    
             res.status(500).send({ message: "Hubo un problema con tu dislike al post" });        
         }        
