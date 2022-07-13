@@ -230,9 +230,27 @@ const UserController ={
             res.send(user)
         } catch (error) {
             console.error(error)
-            res.status(500).send({ message: 'Ha habido un problema al cargar la información del vecino' })
+            res.status(500).send({ message: 'Ha habido un problema al cargar la información del usuario' })
         }
-    },       
+    },
+    async updatePhoto(req, res) {
+        try {           
+            // if (req.file)req.body.avatar = (req.file.filename);
+            const updatedUser = {
+                avatar:req.file.filename,
+                
+              };
+            const user = await User.findByIdAndUpdate(req.user._id, updatedUser,
+
+                // { $pull: { avatar: req.file.filename } },        
+                { new: true }        
+            );              
+            res.status(201).send(user); 
+        }catch (error) {
+            console.error(error)
+            res.status(500).send({ message: 'Ha habido un problema al actualizar la foto del usuario' })
+        }
+    }       
 }
 
 module.exports = UserController;

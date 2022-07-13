@@ -21,7 +21,9 @@ const PostController ={
     },
     async delete(req,res){
         try {        
-            const post = await Post.deleteOne({ _id : req.params._id});        
+            // const post = await Post.deleteOne({ _id : req.params._id});      
+            const post = await Post.findByIdAndDelete( req.params._id); 
+            console.log(post)
             res.status(201).send({ message: 'Post borrado con éxito', post});        
         } catch (error) {                   
             res.status(500).send({ message: 'Ha habido un problema al borrar el post' })
@@ -43,12 +45,12 @@ const PostController ={
     },
     async getAll(req, res) {
         try {        
-            const { page = 1, limit = 20 } = req.query;        
+            // const { page = 1, limit = 20 } = req.query;        
             const posts = await Post.find()
             .populate("commentIds")
             .populate("userId")
-            .limit(limit * 1).skip((page - 1) * limit);        
-            res.send(posts);        
+            // .limit(limit * 1).skip((page - 1) * limit);        
+            res.send(posts.reverse());        
         } catch (error) {            
             res.status(500).send({ message: 'Ha habido un problema al recuperar los post'});        
         }        
